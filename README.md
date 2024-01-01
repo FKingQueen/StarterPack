@@ -1,9 +1,12 @@
-Step 1: Create new Laravel Project
-	composer create-project laravel/laravel Test1
-Step 2: Go to the Created Project and Run:
-	composer install
-Step 3: Go to Package.json, then replace devDependencies using:
-    "devDependencies": {
+# Laravel & Vue.js Installation Starter Pack
+
+## Procedures for Installation 
+1. Create new Laravel Project
+-   composer create-project laravel/laravel Test1
+2. Go to the Created Project and Run:
+-   composer install
+3. Go to Package.json, then replace devDependencies using:
+-   "devDependencies": {
         "@vue/compiler-sfc": "^3.2.47",
         "autoprefixer": "^10.4.16",
         "axios": "^0.21",
@@ -18,31 +21,34 @@ Step 3: Go to Package.json, then replace devDependencies using:
         "vue": "^3.2.36",
         "vue-router": "^4.1.6"
     }
-Step 4: Run npm install & npm run watch
-Step 5: Install Tailwind CSS,follow the instruction here at "https://tailwindcss.com/docs/guides/laravel#mix"
-Step 6: Run this: php artisan serve & npm run watch
-Step 7: Change the welcome.blade.ph into main.blade.ph, also in the routes/web.php
-        //main.blade.phh
-        <!DOCTYPE html>
-        <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
-        <head>
-            <!-- ... -->
+4. Run npm install & npm run watch.
+5. Install Tailwind CSS,follow the instruction here at:
+-   "https://tailwindcss.com/docs/guides/laravel#mix"
+6. Run this:
+-   php artisan serve & npm run watch
+7. Change the welcome.blade.ph into main.blade.ph, also in the routes/web.php:
+-   main.blade.php
+    <!DOCTYPE html>
+    <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
+    <head>
+        <!-- ... -->
 
-            <script src="{{ mix('js/app.js') }}" defer></script>
-            <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-        </head>
-        <body>
-            <div id="app">
-                <router-view></router-view>
-            </div>
-        </body>
-        </html>
-        //web.php
-        Route::get('/{any}', function () {
-            return view('main');
-        })->where('any', '.*');
-Step 8: In the resources/js, create App.vue
-        <style>
+        <script src="{{ mix('js/app.js') }}" defer></script>
+        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    </head>
+    <body>
+        <div id="app">
+            <router-view></router-view>
+        </div>
+    </body>
+    </html>
+-   web.php
+    Route::get('/{any}', function () {
+        return view('main');
+    })->where('any', '.*');
+
+8. In the resources/js, create App.vue:
+-   <style>
         .sidebar:hover {
             width: 16rem;
         }
@@ -52,18 +58,18 @@ Step 8: In the resources/js, create App.vue
                 width: calc(100% - 16rem);
             }
         }
-        </style>
-        <template>
-            <div>
-                <router-view></router-view>
-            </div>
-        </template>
+    </style>
+    <template>
+        <div>
+            <router-view></router-view>
+        </div>
+    </template>
 
-        <script>
+    <script>
 
-        </script>
-Step 9: In the resources/js, create folder & file router/index.js
-    import { createRouter, createWebHistory } from 'vue-router'
+    </script>
+9.  In the resources/js, create folder & file router/index.js
+-   import { createRouter, createWebHistory } from 'vue-router'
     import Login from '../components/login.vue'
     import Main from '../components/main.vue'
 
@@ -85,7 +91,7 @@ Step 9: In the resources/js, create folder & file router/index.js
 
     export default router
 
-Step 10: Create main ang login Components
+10. Create main ang login Components.
 
 
 
