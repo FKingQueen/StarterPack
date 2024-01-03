@@ -17,25 +17,30 @@
                         </a-form-item>
                         <a-form-item name="email">
                             <span>Email</span>
-                            <a-input v-model:value="registerForm.email" type="email" placeholder="Email" size="large">
+                            <a-input v-model:value="registerForm.email" placeholder="Email" size="large">
                                 <template #prefix><MailOutlined style="color: rgba(0, 0, 0, 0.25)" /></template>
                             </a-input>
                         </a-form-item>
                         <a-form-item has-feedback name="password">
                             <span>Password</span>
-                            <a-input v-model:value="registerForm.password" type="password" autocomplete="off" placeholder="Password" size="large">
+                            <a-input v-model:value="this.registerForm.password" type="password" autocomplete="off" placeholder="Password" size="large">
                                 <template #prefix><LockOutlined style="color: rgba(0, 0, 0, 0.25)" /></template>
                             </a-input>
                         </a-form-item>
                         <a-form-item has-feedback name="checkPassword">
                             <span>Confirm Password</span>
-                            <a-input v-model:value="registerForm.checkPassword" type="password" autocomplete="off" placeholder="Confirm Password" size="large">
+                            <a-input v-model:value="this.registerForm.checkPassword" type="password" autocomplete="off" placeholder="Confirm Password" size="large">
                                 <template #prefix><LockOutlined style="color: rgba(0, 0, 0, 0.25)" /></template>
                             </a-input>
                         </a-form-item>
                         <a-form-item >
-                            <button @click="register()"
-                                class="flex items-center justify-center focus:outline-none text-white text-sm sm:text-base bg-blue-600 hover:bg-blue-700 rounded py-2 w-full transition duration-150 ease-in">
+                            <a-checkbox class="p-0">I agree to the</a-checkbox>
+                            <a-button type="link" class="p-0 border">Terms of Service</a-button>
+                            <span> and </span>
+                            <a-button type="link"  class="p-0 border">Privacy Policy</a-button>
+                        </a-form-item>
+                        <a-form-item class="border">
+                            <a-button @click="register()" class="flex items-center justify-center focus:outline-none text-white text-sm sm:text-base bg-blue-600 hover:bg-blue-700 rounded py-2 w-full transition duration-150 ease-in">
                                 <span class="mr-2 uppercase">Register</span>
                                 <span>
                                     <svg class="h-6 w-6" fill="none" stroke-linecap="round" stroke-linejoin="round"
@@ -43,8 +48,11 @@
                                         <path d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
                                 </span>
-                            </button>
+                            </a-button>
                         </a-form-item>
+                        <div class="p-0">
+                            <p>Already have an account? <a-button type="link"  class="p-0 border">Login</a-button></p>
+                        </div>
                     </a-form>
                 </div>
             </div>
@@ -57,6 +65,7 @@
 import { LockOutlined, MailOutlined, UserOutlined } from '@ant-design/icons-vue';
 import { defineComponent, ref } from 'vue';
 import axios from 'axios';
+const formRef = ref();
 export default defineComponent({
     components: {
         LockOutlined,
@@ -65,17 +74,22 @@ export default defineComponent({
         // Other components...
     },
     data(){
+        let existingObj = this;
         const validatePass = async (_rule, value) => {
+
             if (value === '') {
                 return Promise.reject(`'password' is required`);
             } else {
                 if (this.registerForm.checkPassword !== '') {
-                this.formRef.value.validateFields('checkPassword');
+                    console.log(formRef.value);
+                   formRef.value.validateFields('checkPassword');
                 }
                 return Promise.resolve();
+                
             }
         };
         const validatePass2 = async (_rule, value) => {
+            console.log(value);
             if (value === '') {
                 return Promise.reject(`'confirm password' is required`);
             } else if (value !== this.registerForm.password) {
@@ -89,13 +103,12 @@ export default defineComponent({
             name: [
                 {
                 required: true,
-
                 },
             ],
             email: [
                 {
                 required: true,
-
+                type: 'email'
                 },
             ],
             password: [
@@ -120,50 +133,23 @@ export default defineComponent({
                 password: '',
                 checkPassword: '',
             },
-            formRef: ref(),
+            // formRef: ref(),
             rules
         }
     },
     methods: {
-        login(){
+        register(){
             let existingObj = this;
-            axios.post('api/login', existingObj.loginForm)
+            axios.post('api/register', existingObj.loginForm)
                 .then(response => {
                     console.log(response.data);
-                    const token = response.data.token;
-                    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+                    
                     // this.$router.push({ path: '/admin/articlePlatform' })
                 })
                 .catch(function (error) {
                     console.error(error);
                 });
         },
-        user(){
-            axios.get('/api/getUser')
-            .then(function (response) {
-               console.log(response.data);
-            })
-            .catch(function (error) {
-                console.log(error)
-            });
-
-        },
-        logout(){
-            axios.post('/api/logout')
-            .then(response => {
-                // Handle successful logout
-                console.log(response.data.message);
-
-                // Remove the token from local storage
-                localStorage.removeItem('auth_token');
-
-                // Redirect or perform other actions as needed
-            })
-            .catch(error => {
-                // Handle error
-                console.error('Logout failed:', error);
-            });
-        }
     }
 });
 </script>
